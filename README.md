@@ -240,6 +240,219 @@ gnuplot plot -vdd#branch
 </div>
 
 
+## Analysis 
+
+Linear Region and Saturation regions can be clearly observed.
+<div align="center" >
+  <img src="./assets/analysis_w1.8u_L1.2u.png" alt="analysis_w1.8u_L1.2u" width="80%">
+</div>
+
+### Effect of Velocity Saturation
+Velocity saturation is a short-channel effect in MOS transistors where the velocity of charge carriers (electrons or holes) in the channel stops increasing linearly with the electric field and instead reaches a maximum, constant value, known as the saturation velocity
+<div align="center" >
+  <img src="./assets/ShortChannelMos.png" alt="ShortChannelMos" width="80%">
+</div>
+
+### Id Vgs Comparison with short channel MOS
+
+<div align="center" >
+  <img src="./assets/idvgs_Comparison.png" alt="idvgs_Comparison" width="80%">
+</div>
+
+Slope becomes linear on higher Vgs in Short Channel MOS due to Velocity Saturation Effects.
+
+<div align="center" >
+  <img src="./assets/velocity_sat_effect.png" alt="velocity_sat_effect" width="80%">
+</div>
+
+### Drain Current Expression including Velocity Saturation Effect
+
+<div align="center" >
+  <img src="./assets/derivingDrainCurrent_including_velocity_sat_effect.png" alt="derivingDrainCurrent_including_velocity_sat_effect" width="80%">
+</div>
+
+### Generalised Drain Current Expression for all operating modes
+
+<div align="center" >
+  <img src="./assets/operation_modes.png" alt="operation_modes" width="80%">
+</div>
+
+### Peak Current reduces due to Velocity Saturation Effect
+
+<div align="center" >
+  <img src="./assets/PeakCurrent_reduces_dueto_vel_sat_effect.png" alt="PeakCurrent_reduces_dueto_vel_sat_effect" width="80%">
+</div>
+
+
+## Lab2
+Steps 1. Clone the repository 
+```bash 
+git clone https://github.com/kunalg123/sky130CircuitDesignWorkshop.git
+```
+Steps 2. Open the file `day2_nfet_idvds_L015_W039.spice` in design folder
+
+```bash 
+vim ./design/day2_nfet_idvds_L015_W039.spice
+```
+
+```
+*Model Description
+.param temp=27
+
+
+*Including sky130 library files
+.lib "sky130_fd_pr/models/sky130.lib.spice" tt
+
+
+*Netlist Description
+
+
+
+XM1 Vdd n1 0 0 sky130_fd_pr__nfet_01v8 w=0.39 l=0.15
+
+R1 n1 in 55
+
+Vdd vdd 0 1.8V
+Vin in 0 1.8V
+
+*simulation commands
+
+.op
+.dc Vdd 0 1.8 0.1 Vin 0 1.8 0.2
+
+.control
+
+run
+display
+setplot dc1
+.endc
+
+.end
+```
+Steps 3. Use ngspice for simulating `day2_nfet_idvds_L015_W039.spice` 
+``` 
+ngspice day2_nfet_idvds_L015_W039.spice
+```
+``` 
+gnuplot plot -vdd#branch
+```
+
+<div align="center" >
+  <img src="./assets/day2_nfet_idvds_gnuplot.png" alt="day2_nfet_idvds_gnuplot" width="80%">
+</div>
+
+Similarly we do it for `day2_nfet_idvgs_L015_W039.spice`
+
+<div align="center" >
+  <img src="./assets/day2_nfet_idvgs_gnuplot.png" alt="day2_nfet_idvgs_gnuplot" width="80%">
+</div>
+
+The results from above simulation show the effect of velocity saturation as discussed above. Forming of Linear slope and Peak Current Reduction when we compare it with `day1_nfet_idvds_L2_W5.spice`.
+
+### MOS Characteristics
+<div align="center" >
+  <img src="./assets/MOS_Characteristics.png" alt="MOS_Characteristics" width="80%">
+</div>
+
+<div align="center" >
+  <img src="./assets/Cmos_inverter_ckt.png" alt="Cmos_inverter_ckt" width="80%">
+</div>
+
+**PMOS and NMOS Ids vs Vds Curves**
+
+<div align="center" >
+  <img src="./assets/pmos_nmos.png" alt="pmos_nmos" width="80%">
+</div>
+
+**Changing_vgsP_in_terms_of_Vin**
+
+<div align="center" >
+  <img src="./assets/changing_vgsP_in_terms_of_Vin.png" alt="changing_vgsP_in_terms_of_Vin" width="80%">
+</div>
+
+**Creating Load Curves**
+
+<div align="center" >
+  <img src="./assets/LoadCurve_Pmos.png" alt="LoadCurve_Pmos" width="80%">
+</div>
+
+<div align="center" >
+  <img src="./assets/LoadCurve_Nmos.png" alt="LoadCurve_Nmos" width="80%">
+</div>
+
+### CMOS_VTC(VoltageTransferCharacteristics)
+
+<div align="center" >
+  <img src="./assets/CMOS_VTC(VoltageTransferCharacteristics).png" alt="VoltageTransferCharacteristics" width="80%">
+</div>
+
+### SPICE Deck
+
+<div align="center" >
+  <img src="./assets/Spice_deck.png" alt="Spice_deck" width="80%">
+</div>
+
+<div align="center" >
+  <img src="./assets/spice_netlist_cmos_inverter.png" alt="spice_netlist_cmos_inverter" width="80%">
+</div>
+
+### Analysis
+
+<div align="center" >
+  <img src="./assets/spice_sim_analysis_diff_wL_pmos_in_cmos_inverter.png" alt="spice_sim_analysis_diff_wL_pmos_in_cmos_inverter" width="80%">
+</div>
+
+### Lab 3
+
+Use ngspice for simulating `day3_inv_vtc_Wp084_Wn036.spice` 
+``` 
+ngspice day3_inv_vtc_Wp084_Wn036.spice
+```
+``` 
+gnuplot plot -vdd#branch
+```
+
+<div align="center" >
+  <img src="./assets/day3_cmos_vtc_gnuplot.png" alt="day3_inv_vtc_Wp084_Wn036.spice" width="80%">
+</div>
+
+Similarly we do it for `day3_inv_tran_Wp084_Wn036.spice`
+
+<div align="center" >
+  <img src="./assets/day3_cmos_tran_gnuplot.png" alt="day3_cmos_tran_gnuplot" width="80%">
+</div>
+
+### Analysis 
+
+**Threshold Voltage Shift**
+
+<div align="center" >
+  <img src="./assets/Switching_Threshold.png" alt="Switching_Threshold" width="80%">
+</div>
+
+**Deriving Threshold Voltage**
+
+<div align="center" >
+  <img src="./assets/Deriving_Vm.png" alt="Deriving_Vm" width="80%">
+</div>
+
+**Varying_wL_pmos_for_setting_Vm**
+
+<div align="center" >
+  <img src="./assets/Varying_wL_pmos_for_setting_Vm.png" alt="Varying_wL_pmos_for_setting_Vm" width="80%">
+</div>
+
+**Variation_in_Rise,Fall_delay_for_diff_wL**
+
+<div align="center" >
+  <img src="./assets/Variation_in_Rise,Fall_delay_for_diff_wL.png" alt="Variation_in_Rise,Fall_delay_for_diff_wL" width="80%">
+</div>
+
+**Understanding Clock Tree Buffer**
+
+<div align="center" >
+  <img src="./assets/ClockBuffer.png" alt="ClockBuffer" width="80%">
+</div>
 
 ## Acknowledgement 👑
 I am thankful to [**Kunal Ghosh**](https://github.com/kunalg123) and Team **[VLSI System Design (VSD)](https://vsdiat.vlsisystemdesign.com/)** for the opportunity to participate in the ongoing **RISC-V SoC Tapeout Program**.  
