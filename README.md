@@ -625,11 +625,65 @@ tp_fall = 2.8488e-10 s = 284.88 ps = 0.28488 ns
   <img src="./assets/Actual_IO_Char_inverter.png" alt="Actual_IO_Char_inverter" width="80%">
 </div>
 
-## Noise Margin
+## Noise Margin Fundamentals
+
+**Definition:** Noise margin quantifies the maximum noise voltage that can be tolerated at the input while maintaining valid logic levels at the output.
+
+**Why Noise Margins Matter:**
+- Real circuits experience noise from:
+  - Crosstalk between wires
+  - Power supply variations
+  - Electromagnetic interference (EMI)
+  - Substrate coupling
+- Adequate noise margins ensure reliable operation
+- Critical for yield and reliability in production
+
+## Noise Margin Voltage Parameters
+
+**Four Critical Voltages:**
+
+1. **VOH (Output High Voltage):**
+   - Maximum output voltage when output is logic '1'
+   - Ideally VOH = VDD
+
+2. **VOL (Output Low Voltage):**
+   - Minimum output voltage when output is logic '0'
+   - Ideally VOL = 0V
+
+3. **VIH (Input High Voltage):**
+   - Minimum input voltage recognized as logic '1'
+   - Defined where dVout/dVin = -1 (unity gain point) on falling edge
+
+4. **VIL (Input Low Voltage):**
+   - Maximum input voltage recognized as logic '0'
+   - Defined where dVout/dVin = -1 (unity gain point) on rising edge
 
 <div align="center" >
   <img src="./assets/NMH_NML.png" alt="NMH_NML" width="80%">
 </div>
+
+## Noise Margin Definitions
+
+**High-Level Noise Margin (NMH):**
+```
+NMH = VOH - VIH
+```
+- Maximum noise voltage that can be added to a high input
+- Ensures output remains valid high
+
+**Low-Level Noise Margin (NML):**
+```
+NML = VIL - VOL
+```
+- Maximum noise voltage that can be subtracted from a low input
+- Ensures output remains valid low
+
+**Ideal Values:**
+- For VDD = 1.8V: NMH = NML ≈ 0.6-0.7V
+- Larger noise margins → better noise immunity
+- Both margins should be roughly equal for symmetric behavior
+
+
 
 <div align="center" >
   <img src="./assets/Noise_Margin_summary.png" alt="Noise_Margin_summary" width="80%">
@@ -639,8 +693,27 @@ tp_fall = 2.8488e-10 s = 284.88 ps = 0.28488 ns
   <img src="./assets/effectOf_wL_on_noiseMargin.png" alt="effectOf_wL_on_noiseMargin" width="80%">
 </div>
 
+## Graphical Extraction Method
+
+**Step-by-Step Procedure:**
+
+1. Plot VTC (Vout vs Vin)
+2. Calculate slope: dVout/dVin at each point
+3. Find points where slope = -1:
+   - Left unity-gain point → VIL
+   - Right unity-gain point → VIH
+4. Read VOL and VOH from VTC extremes
+5. Calculate NML = VIL - VOL
+6. Calculate NMH = VOH - VIH
+
 ### Lab 4
 
+**Objective:** Extract complete noise margin parameters for standard inverter.
+
+**Device Sizing:**
+- Wn = 0.36 μm, Ln = 0.15 μm
+- Wp = 1.00 μm, Lp = 0.15 μm
+- Wp/Wn = 2.78
 
 Use ngspice for simulating `day4_inv_noisemargin_wp1_wn036.spice` 
 ``` 
