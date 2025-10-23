@@ -454,6 +454,113 @@ Similarly we do it for `day3_inv_tran_Wp084_Wn036.spice`
   <img src="./assets/ClockBuffer.png" alt="ClockBuffer" width="80%">
 </div>
 
+**Input Output Characteristics**
+
+<div align="center" >
+  <img src="./assets/IO_char_with_finiteSlope.png" alt="IO_char_with_finiteSlope" width="80%">
+</div>
+
+<div align="center" >
+  <img src="./assets/Actual_IO_Char_inverter.png" alt="Actual_IO_Char_inverter" width="80%">
+</div>
+
+## Noise Margin
+
+<div align="center" >
+  <img src="./assets/NMH_NML.png" alt="NMH_NML" width="80%">
+</div>
+
+<div align="center" >
+  <img src="./assets/Noise_Margin_summary.png" alt="Noise_Margin_summary" width="80%">
+</div>
+
+<div align="center" >
+  <img src="./assets/effectOf_wL_on_noiseMargin.png" alt="effectOf_wL_on_noiseMargin" width="80%">
+</div>
+
+### Lab 4
+
+
+Use ngspice for simulating `day4_inv_noisemargin_wp1_wn036.spice` 
+``` 
+ngspice day4_inv_noisemargin_wp1_wn036.spice
+```
+``` 
+gnuplot plot -vdd#branch
+```
+
+<div align="center" >
+  <img src="./assets/day4_cmos_noiseM_gnuplot.png" alt="day4_cmos_noiseM_gnuplot" width="80%">
+</div>
+
+<div align="center" >
+  <img src="./assets/NoiseMargin_calc.png" alt="NoiseMargin_calc" width="80%">
+</div>
+
+## Power Supply Variation
+
+<div align="center" >
+  <img src="./assets/PowerSupplyVariation.png" alt="PowerSupplyVariation" width="80%">
+</div>
+
+<div align="center" >
+  <img src="./assets/spice_sim_powerSupply_scaling.png" alt="spice_sim_powerSupply_scaling" width="80%">
+</div>
+
+<div align="center" >
+  <img src="./assets/advantage_disadvantages_powerSupplyScaling.png" alt="advantage_disadvantages_powerSupplyScaling" width="80%">
+</div>
+
+### Lab 5 Part 1
+
+Use ngspice for simulating `day5_inv_supplyvariation_Wp1_Wn036.spice` 
+``` 
+ngspice day5_inv_supplyvariation_Wp1_Wn036.spice
+```
+``` 
+gnuplot plot -vdd#branch
+```
+
+<div align="center" >
+  <img src="./assets/characteristics_for_diff_supply_voltages.png" alt="characteristics_for_diff_supply_voltages" width="80%">
+</div>
+
+## Variation due to Etching Process
+
+<div align="center" >
+  <img src="./assets/Variation_due_to_etching_process.png" alt="Variation_due_to_etching_process" width="80%">
+</div>
+
+## Variation due to Oxide Thickness
+
+<div align="center" >
+  <img src="./assets/Variation_due_to_oxide_thickness.png" alt="Variation_due_to_oxide_thickness" width="80%">
+</div>
+
+## Device Variations
+
+<div align="center" >
+  <img src="./assets/spice_sim_device_variations.png" alt="spice_sim_device_variations" width="80%">
+</div>
+
+<div align="center" >
+  <img src="./assets/static_behavior_analysis_spice_sim.png" alt="static_behavior_analysis_spice_sim" width="80%">
+</div>
+
+### Lab 5 Part 2
+
+Use ngspice for simulating `day5_inv_devicevariation_wp7_wn042.spice` 
+``` 
+ngspice day5_inv_devicevariation_wp7_wn042.spice
+```
+``` 
+gnuplot plot -vdd#branch
+```
+
+<div align="center" >
+  <img src="./assets/day5_cmos_device_variation_gnuplot.png" alt="day5_cmos_device_variation_gnuplot" width="80%">
+</div>
+
 ## Acknowledgement 👑
 I am thankful to [**Kunal Ghosh**](https://github.com/kunalg123) and Team **[VLSI System Design (VSD)](https://vsdiat.vlsisystemdesign.com/)** for the opportunity to participate in the ongoing **RISC-V SoC Tapeout Program**.  
 
