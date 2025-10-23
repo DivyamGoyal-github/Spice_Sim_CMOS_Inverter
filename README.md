@@ -35,8 +35,23 @@ It allows circuit designers to verify functionality, noise margins, power, and t
   <img src="./assets/QuesWeShouldAns.png" alt="QuesWeShouldAns" width="80%">
 </div>
 
-**NMOS as Basic Element in Circuit Design**
+**NMOS as Basic Element in Circuit Design** \
 An NMOS transistor acts as a switch controlled by gate voltage $(V_g)$. When $(V_{gs} > V_t)$, a conduction channel is formed between source and drain.
+
+**Key Components:**
+
+- P-Substrate: Base material (p-type silicon)
+- N⁺ Source/Drain: Heavily doped n-type regions for current conduction
+- Gate Oxide (SiO₂): Thin insulating layer for capacitive control
+- Gate Electrode: Poly-Si or metal; controls inversion layer formation
+- Isolation Oxide: Prevents electrical cross-talk between devices
+- Body Terminal (B): Connected to substrate, usually tied to ground
+
+**Operation Principle:**
+
+Applying gate-to-source voltage Vgs > Vt forms a conductive channel between source and drain
+Channel acts as voltage-controlled resistor in linear region
+Current saturates when channel pinches off near drain
 
 <div align="center" >
   <img src="./assets/NMOS.png" alt="NMOS" width="80%">
@@ -46,7 +61,7 @@ An NMOS transistor acts as a switch controlled by gate voltage $(V_g)$. When $(V
   <img src="./assets/Threshold_Voltage.png" alt="Threshold_Voltage" width="80%">
 </div>
 
-**Strong Inversion and Threshold Voltage**
+**Strong Inversion and Threshold Voltage** \
 Strong inversion starts when $(V_{gs})$ exceeds threshold voltage $(V_t)$.  
 $(V_t)$ is affected by:
 - Substrate doping concentration
@@ -183,7 +198,19 @@ SPICE accepts standard engineering multipliers for convenience.
   <img src="./assets/Technology_File.png" alt="Technology_File" width="80%">
 </div>
 
-## Lab1
+## Regions of Operation
+
+| Region | Condition | Drain Current | Application |
+|--------|-----------|---------------|-------------|
+| **Cutoff** | Vgs < Vt | Id ≈ 0 | OFF state, logic '0' |
+| **Linear** | Vgs > Vt, Vds < Vgs-Vt | Id ∝ Vds | Resistive switches, transmission gates |
+| **Saturation** | Vgs > Vt, Vds ≥ Vgs-Vt | Id ∝ (Vgs-Vt)² | Amplifiers, current sources |
+
+
+### Lab1
+
+**Objective:** Observe linear and saturation regions for a long-channel NMOS device.
+
 Steps 1. Clone the repository 
 ```bash 
 git clone https://github.com/kunalg123/sky130CircuitDesignWorkshop.git
@@ -240,6 +267,12 @@ gnuplot plot -vdd#branch
 </div>
 
 
+**Observations:**
+- **Linear Region**: Current increases linearly with Vds for low Vds
+- **Saturation Region**: Current plateaus at higher Vds
+- **Family of Curves**: Different Vgs values produce different saturation currents
+- **Peak Current**: ≈ 410 μA at Vgs = 1.8V, Vds = 1.8V
+
 ## Analysis 
 
 Linear Region and Saturation regions can be clearly observed.
@@ -285,6 +318,9 @@ Slope becomes linear on higher Vgs in Short Channel MOS due to Velocity Saturati
 
 
 ## Lab2
+
+**Objective:** Extract threshold voltage from transfer characteristics.
+
 Steps 1. Clone the repository 
 ```bash 
 git clone https://github.com/kunalg123/sky130CircuitDesignWorkshop.git
@@ -349,10 +385,57 @@ Similarly we do it for `day2_nfet_idvgs_L015_W039.spice`
 
 The results from above simulation show the effect of velocity saturation as discussed above. Forming of Linear slope and Peak Current Reduction when we compare it with `day1_nfet_idvds_L2_W5.spice`.
 
+
+**Threshold Voltage Extraction:**
+1. Plot Id vs Vgs on linear scale
+2. Find maximum slope (gm,max) point
+3. Extrapolate linear portion to Id = 0 axis
+4. Intersection gives Vt ≈ 0.4-0.5V for SKY130 typical corner
+
+**Observations:**
+- **Subthreshold Region**: Exponential Id increase below Vt
+- **Strong Inversion**: Quadratic Id dependence above Vt
+- **Body Effect**: Vt increases with positive Vsb
+
+**Comparative Analysis:**
+
+| Parameter | Long Channel (W=5µm, L=2µm) | Short Channel (W=0.39µm, L=0.15µm) |
+|-----------|----------------------------|-------------------------------------|
+| W/L Ratio | 2.5 | 2.6 |
+| Peak Id | ≈ 410 μA | ≈ 210 μA |
+| Saturation Mode | Classical pinch-off | Velocity saturated |
+| Vds,sat | ≈ Vgs - Vt | << Vgs - Vt |
+| Transconductance | Higher | Degraded (~50%) |
+
+**Key Observations:**
+- Despite similar W/L ratio, short-channel device has **~50% lower current**
+- Saturation occurs at **lower Vds**
+- Curves show **less pronounced saturation** region
+- **Velocity saturation** is the dominant current-limiting mechanism
+
+
 ### MOS Characteristics
+
 <div align="center" >
   <img src="./assets/MOS_Characteristics.png" alt="MOS_Characteristics" width="80%">
 </div>
+
+### CMOS Inverter
+
+A CMOS inverter uses complementary PMOS and NMOS transistors:
+
+**Structure:**
+- PMOS source → VDD, drain → Vout
+- NMOS source → GND, drain → Vout
+- Gates tied together → Vin
+- Drains tied together → Vout
+
+**Logic Operation:**
+
+| Vin | PMOS | NMOS | Vout |
+|-----|------|------|------|
+| 0V (Low) | ON | OFF | VDD (High) |
+| VDD (High) | OFF | ON | 0V (Low) |
 
 <div align="center" >
   <img src="./assets/Cmos_inverter_ckt.png" alt="Cmos_inverter_ckt" width="80%">
@@ -402,6 +485,7 @@ The results from above simulation show the effect of velocity saturation as disc
   <img src="./assets/spice_sim_analysis_diff_wL_pmos_in_cmos_inverter.png" alt="spice_sim_analysis_diff_wL_pmos_in_cmos_inverter" width="80%">
 </div>
 
+
 ### Lab 3
 
 Use ngspice for simulating `day3_inv_vtc_Wp084_Wn036.spice` 
@@ -416,15 +500,92 @@ gnuplot plot -vdd#branch
   <img src="./assets/day3_cmos_vtc_gnuplot.png" alt="day3_inv_vtc_Wp084_Wn036.spice" width="80%">
 </div>
 
+**Switching Threshold Extraction:**
+
+Method 1: Graphical
+- Plot Vout vs Vin
+- Plot line y = x
+- Intersection gives Vm
+
+Method 2: SPICE Measurement
+```spice
+.measure dc vm when out=in
+```
+
+**Expected Vm ≈ 0.89-0.90V** (close to VDD/2 = 0.9V)
+
 Similarly we do it for `day3_inv_tran_Wp084_Wn036.spice`
 
 <div align="center" >
   <img src="./assets/day3_cmos_tran_gnuplot.png" alt="day3_cmos_tran_gnuplot" width="80%">
 </div>
 
-### Analysis 
 
-**Threshold Voltage Shift**
+## **Delay Measurements:**
+
+## **Transient Delay Extraction — Detailed Calculation**
+
+**Context:** values from ngspice output (screenshot):
+- First rising-crossing point: `x0 = 2.15167e-09` s, `y0 = 0.902174`
+- Second rising-crossing point: `x0 = 2.485e-09` s, `y0 = 0.901087`
+- First falling-crossing candidate: `x0 = 4.05e-09` s, `y0 = 0.9`
+- Second falling-crossing candidate: `x0 = 4.33488e-09` s, `y0 = 0.898913`
+
+
+---
+
+## **Definitions**
+- **Rise propagation delay (tpLH)** ≈ time difference between the two specified rising crossing points:
+tp_rise = t2_rise − t1_rise
+
+
+- **Fall propagation delay (tpHL)** ≈ time difference between the two specified falling crossing points:
+tp_fall = t2_fall − t1_fall
+
+
+
+---
+
+## **Numeric calculation (SI units)**
+
+### Rise delay
+t1_rise = 2.15167e-09 s
+t2_rise = 2.48500e-09 s
+
+tp_rise = t2_rise - t1_rise
+= 2.48500e-09 - 2.15167e-09
+= 3.3333000000000013e-10 s
+
+
+
+Convert to convenient units:
+tp_rise = 3.3333e-10 s = 333.33 ps = 0.33333 ns
+
+
+### Fall delay
+t1_fall = 4.05000e-09 s
+t2_fall = 4.33488e-09 s
+
+tp_fall = t2_fall - t1_fall
+= 4.33488e-09 - 4.05000e-09
+= 2.8488000000000036e-10 s
+
+
+
+Convert to convenient units:
+tp_fall = 2.8488e-10 s = 284.88 ps = 0.28488 ns
+
+
+
+---
+
+## **Summary (final values)**
+- Rise propagation delay (tp_rise) = 3.3333e-10 s = 333.33 ps
+
+- Fall propagation delay (tp_fall) = 2.8488e-10 s = 284.88 ps
+
+
+### **Threshold Voltage Shift**
 
 <div align="center" >
   <img src="./assets/Switching_Threshold.png" alt="Switching_Threshold" width="80%">
